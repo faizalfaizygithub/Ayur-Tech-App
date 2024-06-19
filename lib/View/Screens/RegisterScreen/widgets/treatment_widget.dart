@@ -36,11 +36,13 @@ class TreatmentsWidget extends StatelessWidget {
             children: [
               _buildPatientCountRow('Male', treatment.malePatients),
               _buildPatientCountRow('Female', treatment.femalePatients),
-              IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.edit,
-                  )),
+              Expanded(
+                child: IconButton(
+                    onPressed: () {},
+                    icon: Icon(
+                      Icons.edit,
+                    )),
+              ),
             ],
           ),
         ],

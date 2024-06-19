@@ -30,7 +30,7 @@ class _TreatmentDialogState extends State<TreatmentDialog> {
       backgroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: SizedBox(
-        height: MediaQuery.of(context).size.height * 0.5,
+        height: MediaQuery.of(context).size.height * 0.6,
         child: Padding(
           padding: const EdgeInsets.all(10.0),
           child: Column(

@@ -92,9 +92,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         centerTitle: false,
         title: const Text('Register'),
         actions: [
-          IconButton(
-              onPressed: () {},
-              icon: Image.asset('assets/icons/notification_icon.png'))
+          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_outlined))
         ],
       ),
       body: SingleChildScrollView(
@@ -106,7 +104,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 CommonTextField(
-                  hintText: 'Enter your name',
+                  hintText: 'Enter your full name',
                   fieldText: 'Name',
                   controller: nameController,
                 ),
@@ -123,7 +121,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   height: 20,
                 ),
                 CommonTextField(
-                  hintText: 'Enter your Address',
+                  hintText: 'Enter your full Address',
                   fieldText: 'Address',
                   controller: addressController,
                 ),
@@ -133,7 +131,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const CommonTextFieldText(text: 'Location'),
                 TextFieldWithDropDown(
                   options: keralaStates,
-                  hintText: 'Select your location',
+                  hintText: 'Choose your location',
                   onChanged: (value) {
                     setState(() {
                       selectedLocation = value;
@@ -147,7 +145,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 const CommonTextFieldText(text: 'Branch'),
                 TextFieldWithDropDown(
                   options: keralaStates,
-                  hintText: 'Select your branch',
+                  hintText: 'Select the branch',
                   onChanged: (value) {
                     setState(() {
                       selectedBranch = value;
