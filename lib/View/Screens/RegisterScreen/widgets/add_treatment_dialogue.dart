@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/model/treatment_model.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/gender_counter.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/text_field_with_dropdown.dart';
-import 'package:noviindus_tech/View/tools/common_button.dart';
+import 'package:noviindus_tech/View/tools/widgets/common_button.dart';
 
 class TreatmentDialog extends StatefulWidget {
   final List<String> treatmentList;

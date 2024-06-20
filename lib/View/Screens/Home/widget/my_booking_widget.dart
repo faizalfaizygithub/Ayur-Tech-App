@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:noviindus_tech/Model/my_booking_model.dart';
 import 'package:noviindus_tech/View/theme/colors.dart';
 
 class MyBookingWidget extends StatelessWidget {
-  final MyBookingModel myBookingModel;
+  final String patientName;
+  final String packageName;
+  final String doctorName;
+  final String date;
+
   final int count;
 
   const MyBookingWidget({
     super.key,
-    required this.myBookingModel,
     required this.count,
+    required this.patientName,
+    required this.packageName,
+    required this.doctorName,
+    required this.date,
   });
 
   @override
@@ -22,11 +28,9 @@ class MyBookingWidget extends StatelessWidget {
         children: [
           _buildListTile(
               count: count.toString(),
-              doctorName: myBookingModel.doctorName,
-              packageName: myBookingModel.packageName),
-          _buildInfoRow(
-              date: myBookingModel.date,
-              patientName: myBookingModel.patientName),
+              doctorName: doctorName,
+              packageName: packageName),
+          _buildInfoRow(date: date, patientName: patientName),
           const Divider(),
           _buildBookingDetailsRow(),
         ],

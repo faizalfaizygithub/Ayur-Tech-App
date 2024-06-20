@@ -7,9 +7,9 @@ import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/textfield_wit
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/time_picker_with_dropdown.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/treatment_widget.dart';
 import 'package:noviindus_tech/View/theme/colors.dart';
-import 'package:noviindus_tech/View/tools/commom_text_field.dart';
-import 'package:noviindus_tech/View/tools/common_button.dart';
-import 'package:noviindus_tech/View/tools/common_text_field_text.dart';
+import 'package:noviindus_tech/View/tools/widgets/commom_text_field.dart';
+import 'package:noviindus_tech/View/tools/widgets/common_button.dart';
+import 'package:noviindus_tech/View/tools/widgets/common_text_field_text.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});

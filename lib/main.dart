@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:noviindus_tech/Controller/provider/home_provider.dart';
+import 'package:noviindus_tech/Controller/provider/login_provider.dart';
 import 'package:noviindus_tech/View/Screens/Home/ui/home_page.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/ui/register_screen.dart';
 import 'package:noviindus_tech/View/Screens/splashScreen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,17 +16,24 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        routes: {
-          'homePage': (context) => HomeScreen(),
-          'registerScreen': (context) => RegisterScreen()
-        },
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: SplashScreen());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginProvider()),
+        ChangeNotifierProvider(create: (_) => HomeProvider()),
+        // ChangeNotifierProvider(create: (_) => RegistrationScreenProvider()),
+      ],
+      child: MaterialApp(
+          routes: {
+            'homePage': (context) => const HomeScreen(),
+            'registerScreen': (context) => const RegisterScreen()
+          },
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+            useMaterial3: true,
+          ),
+          home: const SplashScreen()),
+    );
   }
 }
