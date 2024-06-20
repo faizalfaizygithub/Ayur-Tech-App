@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
           isLoading: value.isLoading,
           child: Scaffold(
             appBar: AppBar(
+              leading: Icon(Icons.arrow_back),
               actions: [
                 IconButton(
                     onPressed: () {},
@@ -118,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 padding: EdgeInsets.only(
                                     top: 8.0,
                                     bottom: 8.0,
-                                    left: 8.0,
+                                    left: 20.0,
                                     right: 100),
                                 child: Text(
                                   'Date',

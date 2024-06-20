@@ -57,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     child: Column(
                       children: [
                         const Text(
-                          'Login or register to book your appointments',
+                          'Login or Register to Book Your Appointments',
                           style: TextStyle(
                             fontWeight: FontWeight.w600,
                             fontSize: 24,
@@ -75,7 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           height: 20,
                         ),
                         CommonTextField(
-                          hintText: 'Enter your password',
+                          hintText: 'Enter password',
                           controller: passwordController,
                           isPassword: true,
                           fieldText: 'Password',

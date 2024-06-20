@@ -27,7 +27,7 @@ class MyBookingWidget extends StatelessWidget {
       child: Column(
         children: [
           _buildListTile(
-              count: count.toString(),
+              count: "$count.".toString(),
               doctorName: doctorName,
               packageName: packageName),
           _buildInfoRow(date: date, patientName: patientName),
@@ -45,11 +45,11 @@ class MyBookingWidget extends StatelessWidget {
     return ListTile(
       leading: Text(
         count,
-        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
       ),
       title: Text(
         doctorName,
-        style: const TextStyle(fontWeight: FontWeight.w500, fontSize: 18),
+        style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
       ),
       subtitle: Text(
         packageName,

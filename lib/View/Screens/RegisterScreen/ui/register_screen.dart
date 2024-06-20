@@ -97,11 +97,23 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: const Text('Register'),
         actions: [
           IconButton(
-              onPressed: () {}, icon: Icon(Icons.notifications_none_outlined))
+              onPressed: () {},
+              icon: const Icon(Icons.notifications_none_outlined))
         ],
+        bottom: PreferredSize(
+          preferredSize: Size(double.infinity, 30),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 25.0),
+            child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Register',
+                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                )),
+          ),
+        ),
       ),
       body: Consumer<RegistrationScreenProvider>(
         builder: (context, provider, _) {

@@ -31,6 +31,7 @@ class _TextFieldWithDropDownState extends State<TextFieldWithDropDown> {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
+      isExpanded: true,
       icon: const Icon(
         Icons.keyboard_arrow_down,
         color: AppPalette.appColor,
@@ -45,14 +46,16 @@ class _TextFieldWithDropDownState extends State<TextFieldWithDropDown> {
         }
       },
       decoration: InputDecoration(
-        enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade400)),
-        focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(color: Colors.grey.shade400)),
-        hintText: widget.hintText,
-      ),
+          fillColor: Colors.grey.shade100,
+          filled: true,
+          enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade400)),
+          focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade400)),
+          hintText: widget.hintText,
+          hintStyle: TextStyle(color: Colors.grey.shade400)),
       items: widget.options
           .map((String option) => DropdownMenuItem<String>(
                 value: option,

@@ -33,14 +33,16 @@ class CommonTextField extends StatelessWidget {
           obscureText: isPassword,
           controller: controller,
           decoration: InputDecoration(
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey.shade400)),
-            focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
-                borderSide: BorderSide(color: Colors.grey.shade400)),
-            hintText: showHintText ? hintText : '',
-          ),
+              fillColor: Colors.grey.shade100,
+              filled: true,
+              enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.grey.shade400)),
+              focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: BorderSide(color: Colors.grey.shade400)),
+              hintText: showHintText ? hintText : '',
+              hintStyle: TextStyle(color: Colors.grey.shade400)),
           validator: (value) {
             if (value!.isEmpty) {
               return "$fieldText is empty";
