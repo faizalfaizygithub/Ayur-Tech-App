@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noviindus_tech/Controller/service/patient_list_service.dart';
+import 'package:noviindus_tech/Controller/repository/patient_list_repo.dart';
 import 'package:noviindus_tech/Model/home_patient_model.dart';
 import 'package:noviindus_tech/View/tools/screts/token.dart';
 

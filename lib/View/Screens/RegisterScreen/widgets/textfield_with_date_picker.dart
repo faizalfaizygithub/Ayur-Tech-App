@@ -46,6 +46,12 @@ class _TextFieldWithDatePickerState extends State<TextFieldWithDatePicker> {
     return TextFormField(
       controller: widget.controller,
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade400)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade400)),
         hintText: widget.hintText,
         suffixIcon: const Icon(
           Icons.calendar_today,

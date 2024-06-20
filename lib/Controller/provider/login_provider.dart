@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:noviindus_tech/Controller/service/login_servies.dart';
+import 'package:noviindus_tech/Controller/repository/login_repository.dart';
 import 'package:noviindus_tech/Model/login_model.dart';
 import 'package:noviindus_tech/View/tools/screts/token.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LoginProvider with ChangeNotifier {
+class LoginProvider extends ChangeNotifier {
   bool _isLoading = false;
   String? _errorMessage;
 

@@ -57,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: CommonButton(
                     buttonText: 'Register Now',
                     onPressed: () {
-                      Navigator.pushNamed(context, '/RegisterScreen');
+                      Navigator.pushNamed(context, 'registerScreen');
                     }),
               ),
             ),

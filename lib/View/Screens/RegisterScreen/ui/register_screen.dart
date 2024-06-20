@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:noviindus_tech/Controller/provider/registration_provider.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/model/treatment_model.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/add_treatment_dialogue.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/payment_option.dart';
@@ -10,6 +11,7 @@ import 'package:noviindus_tech/View/theme/colors.dart';
 import 'package:noviindus_tech/View/tools/widgets/commom_text_field.dart';
 import 'package:noviindus_tech/View/tools/widgets/common_button.dart';
 import 'package:noviindus_tech/View/tools/widgets/common_text_field_text.dart';
+import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -52,11 +54,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
     'Wayanad',
   ];
 
-  List<String> treatmentList = [
-    'Couple combo package',
-    'Couple normal package',
-    'Single package',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      Provider.of<RegistrationScreenProvider>(context, listen: false)
+          .getTreatmentList();
+      Provider.of<RegistrationScreenProvider>(context, listen: false)
+          .getBranchList();
+    });
+  }
 
   @override
   void dispose() {
@@ -68,7 +75,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     super.dispose();
   }
 
-  void _openTreatmentDialog() {
+  void _openTreatmentDialog(List<String> treatmentList) {
     showDialog(
       context: context,
       builder: (context) {
@@ -92,170 +99,179 @@ class _RegisterScreenState extends State<RegisterScreen> {
         centerTitle: false,
         title: const Text('Register'),
         actions: [
-          IconButton(onPressed: () {}, icon: Icon(Icons.notifications_outlined))
+          IconButton(
+              onPressed: () {}, icon: Icon(Icons.notifications_none_outlined))
         ],
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                CommonTextField(
-                  hintText: 'Enter your full name',
-                  fieldText: 'Name',
-                  controller: nameController,
+      body: Consumer<RegistrationScreenProvider>(
+        builder: (context, provider, _) {
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommonTextField(
+                      hintText: 'Enter your name',
+                      fieldText: 'Name',
+                      controller: nameController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: 'Enter your whatsapp number',
+                      fieldText: 'Whatsapp Number',
+                      controller: whatsappNumberController,
+                      textInputType: TextInputType.number,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: 'Enter your Address',
+                      fieldText: 'Address',
+                      controller: addressController,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(text: 'Location'),
+                    TextFieldWithDropDown(
+                      options: keralaStates,
+                      hintText: 'Select your location',
+                      onChanged: (value) {
+                        setState(() {
+                          selectedLocation = value;
+                          debugPrint(selectedLocation);
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(text: 'Branch'),
+                    TextFieldWithDropDown(
+                      options: provider.branchList
+                          .map((branch) => branch.name!)
+                          .toList(), // Use branchList from provider
+                      hintText: 'Select your branch',
+                      onChanged: (value) {
+                        setState(() {
+                          selectedBranch = value;
+                          debugPrint(selectedBranch);
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(text: 'Treatments'),
+                    for (var treatment in treatments)
+                      TreatmentsWidget(
+                        treatment: treatment,
+                      ),
+                    CommonButton(
+                      buttonText: '+ Add Treatment',
+                      onPressed: () {
+                        _openTreatmentDialog(provider.treatmentList);
+                      },
+                      color: AppPalette.lightGreenColor,
+                      textColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: '',
+                      fieldText: 'Total Amount',
+                      controller: totalAmountController,
+                      showHintText: false,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: '',
+                      fieldText: 'Discount Amount',
+                      controller: discountAmountController,
+                      showHintText: false,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(
+                      text: 'Payment Options',
+                    ),
+                    PaymentOptionsRow(
+                      options: const ['Cash', 'Card', 'UPI'],
+                      onChanged: (value) {
+                        setState(() {
+                          paymentMethod = value;
+                          debugPrint(paymentMethod);
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: '',
+                      fieldText: 'Advance Amount',
+                      controller: advanceAmountController,
+                      showHintText: false,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonTextField(
+                      hintText: '',
+                      fieldText: 'Balance Amount',
+                      controller: balanceAmountController,
+                      showHintText: false,
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(text: 'Treatment Date'),
+                    TextFieldWithDatePicker(
+                      hintText: 'Treatment Date',
+                      controller: dateController,
+                      onDateChanged: (date) {
+                        debugPrint('Select treatment date: $date');
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const CommonTextFieldText(text: 'Treatment Time'),
+                    TimePickerDropdown(
+                      onHourChanged: (hour) {
+                        setState(() {
+                          selectedHour = hour;
+                        });
+                      },
+                      onMinuteChanged: (minute) {
+                        setState(() {
+                          selectedMinutes = minute;
+                        });
+                      },
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CommonButton(buttonText: 'Save', onPressed: () {}),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                  ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: 'Enter your whatsapp number',
-                  fieldText: 'Whatsapp Number',
-                  controller: whatsappNumberController,
-                  textInputType: TextInputType.number,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: 'Enter your full Address',
-                  fieldText: 'Address',
-                  controller: addressController,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(text: 'Location'),
-                TextFieldWithDropDown(
-                  options: keralaStates,
-                  hintText: 'Choose your location',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedLocation = value;
-                      debugPrint(selectedLocation);
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(text: 'Branch'),
-                TextFieldWithDropDown(
-                  options: keralaStates,
-                  hintText: 'Select the branch',
-                  onChanged: (value) {
-                    setState(() {
-                      selectedBranch = value;
-                      debugPrint(selectedBranch); // Update selectedLocation
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(text: 'Treatments'),
-                for (var treatment in treatments)
-                  TreatmentsWidget(
-                    treatment: treatment,
-                  ),
-                CommonButton(
-                  buttonText: '+ Add Treatment',
-                  onPressed: _openTreatmentDialog,
-                  color: AppPalette.lightGreenColor,
-                  textColor: Colors.black,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: '',
-                  fieldText: 'Total Amount',
-                  controller: totalAmountController,
-                  showHintText: false,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: '',
-                  fieldText: 'Discount Amount',
-                  controller: discountAmountController,
-                  showHintText: false,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(
-                  text: 'Payment Options',
-                ),
-                PaymentOptionsRow(
-                  options: const ['Cash', 'Card', 'UPI'],
-                  onChanged: (value) {
-                    setState(() {
-                      paymentMethod = value;
-                      debugPrint(paymentMethod);
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: '',
-                  fieldText: 'Advance Amount',
-                  controller: discountAmountController,
-                  showHintText: false,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonTextField(
-                  hintText: '',
-                  fieldText: 'Balance Amount',
-                  controller: discountAmountController,
-                  showHintText: false,
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(text: 'Treatment Date'),
-                TextFieldWithDatePicker(
-                  hintText: 'Treatment Date',
-                  controller: dateController,
-                  onDateChanged: (date) {
-                    debugPrint('Select treatment date: $date');
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                const CommonTextFieldText(text: 'Treatment Time'),
-                TimePickerDropdown(
-                  onHourChanged: (hour) {
-                    setState(() {
-                      selectedHour = hour;
-                    });
-                  },
-                  onMinuteChanged: (minute) {
-                    setState(() {
-                      selectedMinutes = minute;
-                    });
-                  },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                CommonButton(buttonText: 'Save', onPressed: () {}),
-                const SizedBox(
-                  height: 20,
-                ),
-              ],
+              ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

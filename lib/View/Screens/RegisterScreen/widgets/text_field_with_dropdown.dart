@@ -45,6 +45,12 @@ class _TextFieldWithDropDownState extends State<TextFieldWithDropDown> {
         }
       },
       decoration: InputDecoration(
+        enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade400)),
+        focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(color: Colors.grey.shade400)),
         hintText: widget.hintText,
       ),
       items: widget.options
