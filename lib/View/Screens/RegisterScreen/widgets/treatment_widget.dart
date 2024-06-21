@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:noviindus_tech/View/Screens/RegisterScreen/model/treatment_model.dart';
 import 'package:noviindus_tech/View/theme/colors.dart';
 import 'package:noviindus_tech/View/theme/theme.dart';
+
+import '../model/treatment_model.dart';
 
 class TreatmentsWidget extends StatelessWidget {
   final Treatment treatment;
@@ -27,7 +28,7 @@ class TreatmentsWidget extends StatelessWidget {
             trailing: IconButton(
                 onPressed: () {},
                 icon: Icon(
-                  Icons.close_rounded,
+                  Icons.close,
                   color: Colors.red,
                 )),
           ),
@@ -36,13 +37,12 @@ class TreatmentsWidget extends StatelessWidget {
             children: [
               _buildPatientCountRow('Male', treatment.malePatients),
               _buildPatientCountRow('Female', treatment.femalePatients),
-              Expanded(
-                child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(
-                      Icons.edit,
-                    )),
-              ),
+              IconButton(
+                  onPressed: () {},
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.blue,
+                  )),
             ],
           ),
         ],

@@ -81,7 +81,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           fieldText: 'Password',
                         ),
                         const SizedBox(
-                          height: 120,
+                          height: 40,
                         ),
                         CommonButton(
                             buttonText: 'Login',
@@ -95,7 +95,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               }
                             }),
                         const SizedBox(
-                          height: 120,
+                          height: 40,
                         ),
                         RichText(
                           textAlign: TextAlign.center,

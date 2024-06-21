@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:noviindus_tech/Controller/provider/registration_provider.dart';
-import 'package:noviindus_tech/View/Screens/RegisterScreen/model/treatment_model.dart';
+import 'package:noviindus_tech/View/Screens/RegisterScreen/model/method/generate_pdf.dart';
+import 'package:noviindus_tech/View/Screens/RegisterScreen/ui/pdfvew.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/add_treatment_dialogue.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/payment_option.dart';
 import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/text_field_with_dropdown.dart';
@@ -10,8 +12,11 @@ import 'package:noviindus_tech/View/Screens/RegisterScreen/widgets/treatment_wid
 import 'package:noviindus_tech/View/theme/colors.dart';
 import 'package:noviindus_tech/View/tools/widgets/commom_text_field.dart';
 import 'package:noviindus_tech/View/tools/widgets/common_button.dart';
+import 'package:noviindus_tech/View/tools/widgets/common_loading_widget.dart';
 import 'package:noviindus_tech/View/tools/widgets/common_text_field_text.dart';
 import 'package:provider/provider.dart';
+
+import '../model/treatment_model.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -37,6 +42,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   String? selectedMinutes;
   String? selectedTreatment;
   List<Treatment> treatments = [];
+  bool paymentMethodSelected = true;
   List<String> keralaStates = [
     'Alappuzha',
     'Ernakulam',
@@ -57,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<RegistrationScreenProvider>(context, listen: false)
           .getTreatmentList();
       Provider.of<RegistrationScreenProvider>(context, listen: false)
@@ -72,7 +78,46 @@ class _RegisterScreenState extends State<RegisterScreen> {
     addressController.dispose();
     totalAmountController.dispose();
     discountAmountController.dispose();
+    advanceAmountController.dispose();
+    balanceAmountController.dispose();
+    dateController.dispose();
     super.dispose();
+  }
+
+  void saveAndShowPdf(
+    BuildContext context, {
+    required String name,
+    required String address,
+    required String whatsappNumber,
+    required String bookedOn,
+    required String treatmentDate,
+    required String treatmentTime,
+    required List<Map<String, dynamic>> treatments,
+    required double totalAmount,
+    required double discount,
+    required double advance,
+    required double balance,
+  }) async {
+    final pdfFile = await generatePdf(
+      name: name,
+      address: address,
+      whatsappNumber: whatsappNumber,
+      bookedOn: bookedOn,
+      treatmentDate: treatmentDate,
+      treatmentTime: treatmentTime,
+      treatments: treatments,
+      totalAmount: totalAmount,
+      discount: discount,
+      advance: advance,
+      balance: balance,
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => PdfViewerPage(pdfFile: pdfFile),
+      ),
+    );
   }
 
   void _openTreatmentDialog(List<String> treatmentList) {
@@ -94,33 +139,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: false,
-        actions: [
-          IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none_outlined))
-        ],
-        bottom: PreferredSize(
-          preferredSize: Size(double.infinity, 30),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 25.0),
-            child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Register',
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                )),
+    return Consumer<RegistrationScreenProvider>(builder: (context, value, _) {
+      return LoadingWidget(
+        isLoading: value.isLoading,
+        child: Scaffold(
+          appBar: AppBar(
+            centerTitle: false,
+            title: const Text('Register'),
+            actions: [
+              IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.notifications_outlined))
+            ],
           ),
-        ),
-      ),
-      body: Consumer<RegistrationScreenProvider>(
-        builder: (context, provider, _) {
-          return SingleChildScrollView(
+          body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20),
               child: Form(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 key: _formKey,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -166,7 +202,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
                     const CommonTextFieldText(text: 'Branch'),
                     TextFieldWithDropDown(
-                      options: provider.branchList
+                      options: value.branchList
                           .map((branch) => branch.name!)
                           .toList(), // Use branchList from provider
                       hintText: 'Select your branch',
@@ -188,7 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     CommonButton(
                       buttonText: '+ Add Treatment',
                       onPressed: () {
-                        _openTreatmentDialog(provider.treatmentList);
+                        _openTreatmentDialog(value.treatmentList);
                       },
                       color: AppPalette.lightGreenColor,
                       textColor: Colors.black,
@@ -222,10 +258,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       onChanged: (value) {
                         setState(() {
                           paymentMethod = value;
+                          paymentMethodSelected = true;
                           debugPrint(paymentMethod);
                         });
                       },
                     ),
+                    if (!paymentMethodSelected)
+                      const Text(
+                        'Please select a payment method',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: AppPalette.errorColor,
+                        ),
+                      ),
                     const SizedBox(
                       height: 20,
                     ),
@@ -274,7 +319,61 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     const SizedBox(
                       height: 20,
                     ),
-                    CommonButton(buttonText: 'Save', onPressed: () {}),
+                    CommonButton(
+                        buttonText: 'Save',
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            if (paymentMethod == null) {
+                              setState(() {
+                                paymentMethodSelected = false;
+                              });
+                            } else {
+                              final DateTime now = DateTime.now();
+                              final DateFormat formatter =
+                                  DateFormat('dd/MM/yyyy | hh:mma');
+                              final String formattedDate =
+                                  formatter.format(now);
+                              saveAndShowPdf(
+                                context,
+                                name: nameController.text.trim(),
+                                address: addressController.text.trim(),
+                                whatsappNumber:
+                                    '+91 ${whatsappNumberController.text.trim()}',
+                                bookedOn: formattedDate,
+                                treatmentDate: dateController.text.trim(),
+                                treatmentTime:
+                                    '$selectedHour: $selectedMinutes',
+                                treatments: [
+                                  {
+                                    'name': 'Panchakarma',
+                                    'price': 230,
+                                    'male': 4,
+                                    'female': 4,
+                                    'total': 2540,
+                                  },
+                                  {
+                                    'name': 'Njavara Kizhi Treatment',
+                                    'price': 230,
+                                    'male': 4,
+                                    'female': 4,
+                                    'total': 2540,
+                                  },
+                                  {
+                                    'name': 'Panchakarma',
+                                    'price': 230,
+                                    'male': 4,
+                                    'female': 6,
+                                    'total': 2540,
+                                  },
+                                ],
+                                totalAmount: 7620,
+                                discount: 500,
+                                advance: 1200,
+                                balance: 5920,
+                              );
+                            }
+                          }
+                        }),
                     const SizedBox(
                       height: 30,
                     ),
@@ -282,9 +381,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 ),
               ),
             ),
-          );
-        },
-      ),
-    );
+          ),
+        ),
+      );
+    });
   }
 }
